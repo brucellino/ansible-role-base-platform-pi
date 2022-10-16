@@ -1,5 +1,9 @@
 packer {
   required_plugins {
+    ansible = {
+      version = ">= 1.0.3"
+      source = "github.com/hashicorp/ansible"
+    }
     digitalocean = {
       version = ">= 1.0.4"
       source  = "github.com/digitalocean/digitalocean"
