@@ -17,7 +17,7 @@
     role_name: hah_int_role
     common_name: "{{ ansible_fqdn }}.node.consul"
     engine_mount_point: "pki_hah_int"
-    url: http://192.168.1.14:8200
+    url: "{{ lookup('env', 'VAULT_ADDR') }}"
     token: "{{ lookup('env', 'VAULT_TOKEN') }}"
     alt_names:
       - "{{ ansible_hostname }}.node.consul"
@@ -30,9 +30,9 @@
   ansible.builtin.debug:
     msg: "{{ cert_data.data.data }}"
 
-- name: Ensure Consul config dir
+- name: Ensure TLS config dir
   ansible.builtin.file:
-    path: /etc/consul.d
+    path: "/etc/tls/hashi@home"
     state: directory
     mode: 0700
     owner: root
@@ -40,8 +40,12 @@
 
 - name: Deliver certs
   ansible.builtin.copy:
-    dest: "/etc/consul.d/cert.pem"
-    content: "cert_data.data.data.certificate"
+    dest: "/etc/tls/hashi@home/{{ item }}.pem"
+    content: "cert_data.data.data.{{ item }}"
     mode: 0644
-    owner: consul
-    group: consul
+    owner: root
+    group: root
+  loop:
+    - certificate
+    - issueing_ca
+    - private_key
