@@ -1,0 +1,26 @@
+---
+name: Test
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Get Packer
+        run: |
+          curl https://releases.hashicorp.com/packer/1.8.3/packer_1.8.3_linux_amd64.zip | gunzip -> packer
+          chmod u+x packer
+          ./packer -version
+      - name: Initialise Packer
+        working-directory: test
+        run: ../packer init .

@@ -1,0 +1,17 @@
+---
+- name: Ensure base packages are installed
+  ansible.builtin.package:
+    state: present
+    name: "{{ base_packages }}"
+    use: auto
+  tags:
+    - packages
+
+- name: Ensure that the rest of the packages are installed
+  ansible.builtin.package:
+    state: present
+    name: "{{ packages }}"
+    use: auto
+    update_cache: true
+  tags:
+    - packages
