@@ -1,0 +1,46 @@
+---
+# Tasks for tailscale
+- name: Add tailscale gpg key
+  become: true
+  ansible.builtin.apt_key:
+    url: "{{ tailscale_pkgs_url }}/{{ ansible_distribution | lower }}/{{ ansible_lsb.codename }}.noarmor.gpg"
+    state: present
+    validate_certs: true
+    keyring: /usr/share/keyrings/tailscale-archive-keyring.gpg
+
+- name: Add tailscale packages repo
+  become: true
+  ansible.builtin.apt_repository:
+    repo: |-
+      "deb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg]
+      {{ tailscale_pkgs_url }}/{{ ansible_distribution | lower }}
+      {{ ansible_lsb.codename }} main"
+    state: present
+    mode: 0644
+    update_cache: true
+    validate_certs: true
+    filename: tailscale
+
+- name: Ensure tailscale package
+  become: true
+  ansible.builtin.package:
+    name: tailscale
+    state: present
+
+- name: Get tailscale keys from vault
+  delegate_to: localhost
+  run_once: true
+  ansible.builtin.set_fact:
+    tailscale_keys: "{{ lookup('community.hashi_vault.vault_kv2_get', 'tailscale_access_keys', engine_mount_point='hashiatho.me-v2', url='http://192.168.1.14:8200') }}" # noqa yaml[line-length] jinja[invalid]
+    cacheable: false
+
+- name: Debug fact
+  ansible.builtin.debug:
+    var: tailscale_keys
+
+# Use the vault key lookup to start tailscale with it's auth key
+- name: Start tailscale
+  ansible.builtin.command:
+    cmd: "tailscale up --auth-key {{ tailscale_keys.data.data[ansible_hostname] }}"
+  register: tailscale_up
+  changed_when: false

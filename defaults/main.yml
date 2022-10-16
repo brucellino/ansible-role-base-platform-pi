@@ -1,2 +1,51 @@
 ---
-# defaults file for ansible-role-template
+# defaults file for base-platform
+deb_repositories:
+  - http://archive.raspbian.org/raspbian buster main contrib non-free
+base_packages:
+  - apt-transport-https
+  - bash
+  - bash-completion
+  - git
+  - id-utils
+  - inetutils-traceroute
+  - iptraf
+  - lsb-base
+  - lsb-release
+  - lshw
+  - net-tools
+  - mlocate
+  - procps
+  - python3
+  - sshpass
+  - zlib1g
+  - unzip
+  - ntp
+packages:
+  - jq
+  - bat
+  - python3-virtualenv
+  - tree
+  - fake-hwclock
+  - thefuck
+  - vim
+  - ntpdate
+  # - exa # This is only for armv7
+extra_packages: []
+enabled_langs:
+  - python
+  - nodejs
+nvm_version: v0.39.1
+node_version: 16
+npm:
+  packages:
+    - prettier
+  install_packages: false
+required_services:
+  - ntp
+  - fake-hwclock
+# Should we provision TLS certificates from Vault?
+provision_tls: true
+
+# Tailscale configuration variables
+tailscale_pkgs_url: https://pkgs.tailscale.com/stable/

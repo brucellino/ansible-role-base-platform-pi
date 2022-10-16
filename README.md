@@ -6,7 +6,8 @@ An Ansible role to provision the base layer of my Raspberry pis.
 
 ## Requirements
 
-Operating system installed and sudo for the executing user.
+- Operating system installed and sudo for the executing user.
+- Hashicorp Vault library (`hvac`)
 
 ## Role Variables
 

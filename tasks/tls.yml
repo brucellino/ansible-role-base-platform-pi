@@ -1,0 +1,47 @@
+---
+# Tasks to provision certificates from Vault
+- name: Ensure that hvac pip is installed
+  ansible.builtin.pip:
+    name: hvac
+    state: present
+
+- name: Ensure we have a Vault token
+  ansible.builtin.assert:
+    that: lookup('env', 'VAULT_TOKEN') is defined
+    fail_msg: "No vault token in environment, can't continue."
+    success_msg: "Found a Vault token in the environment"
+    quiet: false
+
+- name: Issue certificate to host
+  community.hashi_vault.vault_pki_generate_certificate: # noqa syntax-check
+    role_name: hah_int_role
+    common_name: "{{ ansible_fqdn }}.node.consul"
+    engine_mount_point: "pki_hah_int"
+    url: http://192.168.1.14:8200
+    token: "{{ lookup('env', 'VAULT_TOKEN') }}"
+    alt_names:
+      - "{{ ansible_hostname }}.node.consul"
+      - "{{ ansible_hostname }}.hashiatho.me"
+    # ip_sans:
+    #   - "{{ ansible_default_ipv4.address }}"
+  register: cert_data
+
+- name: Display generated certificate
+  ansible.builtin.debug:
+    msg: "{{ cert_data.data.data }}"
+
+- name: Ensure Consul config dir
+  ansible.builtin.file:
+    path: /etc/consul.d
+    state: directory
+    mode: 0700
+    owner: root
+    group: root
+
+- name: Deliver certs
+  ansible.builtin.copy:
+    dest: "/etc/consul.d/cert.pem"
+    content: "cert_data.data.data.certificate"
+    mode: 0644
+    owner: consul
+    group: consul

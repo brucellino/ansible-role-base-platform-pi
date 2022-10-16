@@ -1,0 +1,26 @@
+---
+# User tasks for base-platform-pi
+- name: Ensure old users are absent
+  block:
+    - name: Attempt user ubuntu deletion
+      ansible.builtin.user:
+        name: ubuntu
+        state: absent
+        remove: true
+    - name: Attempt pi deletion
+      ansible.builtin.user:
+        name: pi
+        state: absent
+        remove: true
+      ignore_errors: true  # noqa ignore-errors
+  rescue:
+    - name: Debug
+      ansible.builtin.debug:
+        msg: "Can't delete user yet"
+- name: Ensure I am present
+  ansible.builtin.user:
+    name: becker
+    comment: El Magnifico
+    shell: /bin/bash
+    state: present
+    create_home: true
