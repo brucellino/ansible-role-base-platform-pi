@@ -10,3 +10,17 @@ packer {
     }
   }
 }
+
+source "docker" "base-platform" {
+  image = "ubuntu:focal"
+  commit = true
+  platform = "linux/arm64"
+}
+
+build {
+  name = "packer"
+  sources = ["source.docker.base-platform"]
+  provisioner "ansible" {
+    playbook_file = "playbook.yml"
+  }
+}
