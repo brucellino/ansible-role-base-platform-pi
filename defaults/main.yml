@@ -49,3 +49,7 @@ provision_tls: true
 
 # Tailscale configuration variables
 tailscale_pkgs_url: https://pkgs.tailscale.com/stable
+
+tls_pip_deps:
+  - hvac
+  - cryptography
