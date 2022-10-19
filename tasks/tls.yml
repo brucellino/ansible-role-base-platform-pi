@@ -1,9 +1,14 @@
 ---
 # Tasks to provision certificates from Vault
+# If a certificate is not present, or it is going to expire, get a new one from Vault
+# We need to get the cert stat, and the expiration date
+# then register the results and issue conditionally on that.
+
 - name: Ensure that hvac pip is installed
   ansible.builtin.pip:
-    name: hvac
+    name: "{{ item }}"
     state: present
+  loop: "{{ tls_pip_deps }}"
 
 - name: Ensure we have a Vault token
   ansible.builtin.assert:
@@ -11,24 +16,6 @@
     fail_msg: "No vault token in environment, can't continue."
     success_msg: "Found a Vault token in the environment"
     quiet: false
-
-- name: Issue certificate to host
-  community.hashi_vault.vault_pki_generate_certificate: # noqa syntax-check
-    role_name: hah_int_role
-    common_name: "{{ ansible_fqdn }}.node.consul"
-    engine_mount_point: "pki_hah_int"
-    url: "{{ lookup('env', 'VAULT_ADDR') }}"
-    token: "{{ lookup('env', 'VAULT_TOKEN') }}"
-    alt_names:
-      - "{{ ansible_hostname }}.node.consul"
-      - "{{ ansible_hostname }}.hashiatho.me"
-    # ip_sans:
-    #   - "{{ ansible_default_ipv4.address }}"
-  register: cert_data
-
-- name: Display generated certificate
-  ansible.builtin.debug:
-    msg: "{{ cert_data.data.data }}"
 
 - name: Ensure TLS config dir
   ansible.builtin.file:
@@ -38,14 +25,76 @@
     owner: root
     group: root
 
-- name: Deliver certs
-  ansible.builtin.copy:
-    dest: "/etc/tls/hashi@home/{{ item }}.pem"
-    content: "cert_data.data.data.{{ item }}"
-    mode: 0644
-    owner: root
-    group: root
-  loop:
-    - certificate
-    - issueing_ca
-    - private_key
+- name: Stat certificate
+  ansible.builtin.stat:
+    path: /etc/tls/hashi@home/certificate.pem
+  register: cert_stat
+
+- name: Stat certificate
+  ansible.builtin.stat:
+    path: /etc/tls/hashi@home/private_key.pem
+  register: key_stat
+
+- name: Set issue_cert
+  ansible.builtin.set_fact:
+    issue_cert: "{{ ((not cert_stat.stat.exists) or (not key_stat.stat.exists)) | bool }} "
+
+- name: Debug issue_cert
+  ansible.builtin.debug:
+    var: issue_cert
+
+- name: Check Certs
+  when: cert_stat.stat.exists
+  ansible.builtin.block:
+    # If this fails -- either if the cert is not present or if it is not a valid cert
+    # Then the rescue is invoked
+    - name: Get cert facts
+      community.crypto.x509_certificate_info:
+        path: /etc/tls/hashi@home/certificate.pem
+      register: cert_info
+    - name: Check date
+      ansible.builtin.debug:
+        var: cert_info
+    - ansible.builtin.set_fact:
+        issue_cert: cert_info.expired
+  rescue:
+    - name: Remove Corrupt Cert
+      ansible.builtin.file:
+        path: "/etc/tls/hashi@home/{{ item }}.pem"
+        state: absent
+      loop:
+        - certificate
+        - private_key
+        - issuing_ca
+    - name: Set issue_cert fact
+      ansible.builtin.set_fact:
+        issue_cert: true
+
+- name: Issue certificate to host
+  when: (issue_cert | bool)
+  block:
+    - name: Issue cert from Vault
+      community.hashi_vault.vault_pki_generate_certificate: # noqa syntax-check
+        role_name: hah_int_role
+        common_name: "{{ ansible_fqdn }}.node.consul"
+        engine_mount_point: "pki_hah_int"
+        url: "{{ lookup('env', 'VAULT_ADDR') }}"
+        token: "{{ lookup('env', 'VAULT_TOKEN') }}"
+        alt_names:
+          - "{{ ansible_hostname }}.node.consul"
+          - "{{ ansible_hostname }}.hashiatho.me"
+        # ip_sans:
+        #   - "{{ ansible_default_ipv4.address }}"
+      register: cert_data
+
+    - name: Deliver certs
+      ansible.builtin.copy:
+        dest: "/etc/tls/hashi@home/{{ item }}.pem"
+        content: "{{ cert_data.data.data[item] }}"
+        mode: 0644
+        owner: root
+        group: root
+      loop:
+        - certificate
+        - issuing_ca
+        - private_key
