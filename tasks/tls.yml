@@ -25,37 +25,31 @@
     owner: root
     group: root
 
-- name: Stat certificate
+- name: Stat cert files
   ansible.builtin.stat:
-    path: /etc/tls/hashi@home/certificate.pem
-  register: cert_stat
-
-- name: Stat certificate
-  ansible.builtin.stat:
-    path: /etc/tls/hashi@home/private_key.pem
-  register: key_stat
+    path: "/etc/tls/hashi@home/{{ item }}.pem"
+  register: stat
+  loop:
+    - certificate
+    - private_key
+    - issuing_ca
 
 - name: Set issue_cert
+  delegate_to: localhost
   ansible.builtin.set_fact:
-    issue_cert: "{{ ((not cert_stat.stat.exists) or (not key_stat.stat.exists)) | bool }} "
-
-- name: Debug issue_cert
-  ansible.builtin.debug:
-    var: issue_cert
+    issue_cert: "{{false in (stat.results | community.general.json_query('[*].stat.exists')) }}"
 
 - name: Check Certs
-  when: cert_stat.stat.exists
-  ansible.builtin.block:
+  when: false not in (stat.results | community.general.json_query('[*].stat.exists'))
+  block:
     # If this fails -- either if the cert is not present or if it is not a valid cert
     # Then the rescue is invoked
     - name: Get cert facts
       community.crypto.x509_certificate_info:
         path: /etc/tls/hashi@home/certificate.pem
       register: cert_info
-    - name: Check date
-      ansible.builtin.debug:
-        var: cert_info
-    - ansible.builtin.set_fact:
+    - name: Set expired fact
+      ansible.builtin.set_fact:
         issue_cert: cert_info.expired
   rescue:
     - name: Remove Corrupt Cert

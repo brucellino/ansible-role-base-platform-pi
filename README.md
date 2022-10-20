@@ -8,6 +8,7 @@ An Ansible role to provision the base layer of my Raspberry pis.
 
 - Operating system installed and sudo for the executing user.
 - Hashicorp Vault library (`hvac`)
+- Python cryptography module
 
 ## Role Variables
 

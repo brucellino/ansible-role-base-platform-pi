@@ -11,10 +11,10 @@
 - name: Add tailscale packages repo
   become: true
   ansible.builtin.apt_repository:
-    repo: |-
-      "deb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg]
+    repo: >-
+      deb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg]
       {{ tailscale_pkgs_url }}/{{ ansible_distribution | lower }}
-      {{ ansible_lsb.codename }} main"
+      {{ ansible_lsb.codename }} main
     state: present
     mode: 0644
     update_cache: true
@@ -31,7 +31,7 @@
   delegate_to: localhost
   run_once: true
   ansible.builtin.set_fact:
-    tailscale_keys: "{{ lookup('community.hashi_vault.vault_kv2_get', 'tailscale_access_keys', engine_mount_point='hashiatho.me-v2', url='http://192.168.1.14:8200') }}" # noqa yaml[line-length] jinja[invalid]
+    tailscale_keys: "{{ lookup('community.hashi_vault.vault_kv2_get', 'tailscale_access_keys', engine_mount_point='hashiatho.me-v2') }}" # noqa yaml[line-length] jinja[invalid]
     cacheable: false
 
 - name: Debug fact
