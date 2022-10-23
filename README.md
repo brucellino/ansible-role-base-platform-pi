@@ -1,4 +1,4 @@
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/brucellino/ansible-role-base-platform-pi/main.svg)](https://results.pre-commit.ci/latest/github/brucellino/ansible-role-base-platform-pi/main) [![main](https://github.com/brucellino/ansible-role-base-platform-pi/actions/workflows/main.yml/badge.svg)](https://github.com/brucellino/ansible-role-base-platform-pi/actions/workflows/main.yml) [![semantic-release: angular](https://img.shields.io/badge/semantic--release-conventional-e10079?logo=semantic-release)](https://github.com/semantic-release/semantic-release)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/brucellino/ansible-role-base-platform-pi/main.svg)](https://results.pre-commit.ci/latest/github/brucellino/ansible-role-base-platform-pi/main) [![main](https://github.com/brucellino/ansible-role-base-platform-pi/actions/workflows/release.yml/badge.svg)](https://github.com/brucellino/ansible-role-base-platform-pi/actions/workflows/main.yml) [![semantic-release: angular](https://img.shields.io/badge/semantic--release-conventional-e10079?logo=semantic-release)](https://github.com/semantic-release/semantic-release)
 
 # Ansible Role Base Platform Pi
 
@@ -8,6 +8,7 @@ An Ansible role to provision the base layer of my Raspberry pis.
 
 - Operating system installed and sudo for the executing user.
 - Hashicorp Vault library (`hvac`)
+- Python cryptography module
 
 ## Role Variables
 
