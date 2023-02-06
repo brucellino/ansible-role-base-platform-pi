@@ -29,17 +29,17 @@
     - extra_packages
     - python
 
+- name: Tailscale
+  ansible.builtin.import_tasks: tailscale.yml
+  tags:
+    - tailscale
+    - vault_required
+
 - name: TLS
   ansible.builtin.import_tasks: tls.yml
   when: provision_tls | bool
   tags:
     - tls
-    - vault_required
-
-- name: Tailscale
-  ansible.builtin.import_tasks: tailscale.yml
-  tags:
-    - tailscale
     - vault_required
 
 - name: Ensure services enabled

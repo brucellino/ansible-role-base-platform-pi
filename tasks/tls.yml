@@ -37,7 +37,7 @@
 - name: Set issue_cert
   delegate_to: localhost
   ansible.builtin.set_fact:
-    issue_cert: "{{false in (stat.results | community.general.json_query('[*].stat.exists')) }}"
+    issue_cert: "{{ false in (stat.results | community.general.json_query('[*].stat.exists')) }}"
 
 - name: Check Certs
   when: false not in (stat.results | community.general.json_query('[*].stat.exists'))
@@ -68,6 +68,8 @@
   when: (issue_cert | bool)
   block:
     - name: Issue cert from Vault
+      become: false
+      delegate_to: localhost
       community.hashi_vault.vault_pki_generate_certificate: # noqa syntax-check
         role_name: hah_int_role
         common_name: "{{ ansible_fqdn }}.node.consul"

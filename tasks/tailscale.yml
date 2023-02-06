@@ -34,10 +34,6 @@
     tailscale_keys: "{{ lookup('community.hashi_vault.vault_kv2_get', 'tailscale_access_keys', engine_mount_point='hashiatho.me-v2') }}" # noqa yaml[line-length] jinja[invalid]
     cacheable: false
 
-- name: Debug fact
-  ansible.builtin.debug:
-    var: tailscale_keys
-
 # Use the vault key lookup to start tailscale with it's auth key
 - name: Start tailscale
   ansible.builtin.command:
