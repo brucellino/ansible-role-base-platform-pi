@@ -16,7 +16,7 @@
       {{ tailscale_pkgs_url }}/{{ ansible_distribution | lower }}
       {{ ansible_lsb.codename }} main
     state: present
-    mode: 0644
+    mode: "0644"
     update_cache: true
     validate_certs: true
     filename: tailscale
@@ -31,12 +31,12 @@
   delegate_to: localhost
   run_once: true
   ansible.builtin.set_fact:
-    tailscale_keys: "{{ lookup('community.hashi_vault.vault_kv2_get', 'tailscale_access_keys', engine_mount_point='hashiatho.me-v2') }}" # noqa yaml[line-length] jinja[invalid]
+    tailscale_keys: "{{ lookup('community.hashi_vault.vault_kv2_get', 'tailscale', engine_mount_point='hashiatho.me-v2') }}" # noqa yaml
     cacheable: false
 
 # Use the vault key lookup to start tailscale with it's auth key
 - name: Start tailscale
   ansible.builtin.command:
-    cmd: "tailscale up --auth-key {{ tailscale_keys.data.data[ansible_hostname] }}"
+    cmd: "tailscale up --auth-key {{ tailscale_keys.data.data['tailscale_auth_key'] }}"
   register: tailscale_up
   changed_when: false

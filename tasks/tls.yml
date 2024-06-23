@@ -21,7 +21,7 @@
   ansible.builtin.file:
     path: "/etc/tls/hashi@home"
     state: directory
-    mode: 0700
+    mode: "0700"
     owner: root
     group: root
 
@@ -37,7 +37,7 @@
 - name: Set issue_cert
   delegate_to: localhost
   ansible.builtin.set_fact:
-    issue_cert: "{{ false in (stat.results | community.general.json_query('[*].stat.exists')) }}"
+    issue_cert: "{{ false in (stat.results | community.general.json_query('[*].stat.exists')) }}" # noqa jinja[invalid]
 
 - name: Check Certs
   when: false not in (stat.results | community.general.json_query('[*].stat.exists'))
@@ -87,7 +87,7 @@
       ansible.builtin.copy:
         dest: "/etc/tls/hashi@home/{{ item }}.pem"
         content: "{{ cert_data.data.data[item] }}"
-        mode: 0644
+        mode: "0644"
         owner: root
         group: root
       loop:

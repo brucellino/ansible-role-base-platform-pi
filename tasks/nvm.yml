@@ -5,7 +5,7 @@
       ansible.builtin.get_url:
         url: "https://raw.githubusercontent.com/nvm-sh/nvm/{{ nvm_version }}/install.sh"
         dest: ${HOME}/nvm_install.sh"
-        mode: 0777
+        mode: "0777"
 
     - name: Ensure nvm
       ansible.builtin.shell: "${HOME}/nvm_install.sh"
