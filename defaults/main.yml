@@ -31,13 +31,12 @@ packages:
   - thefuck
   - vim
   - ntpdate
-  # - exa # This is only for armv7
 extra_packages: []
 enabled_langs:
   - python
   - nodejs
 nvm_version: v0.39.1
-node_version: 16
+node_version: 22
 npm:
   packages:
     - prettier
