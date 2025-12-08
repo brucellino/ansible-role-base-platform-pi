@@ -1,0 +1,10 @@
+[env]
+_.python.venv = { path = ".venv", create = true }
+
+[tools]
+uv = "latest"
+python = "3.14"
+node = "24"
+
+[tasks]
+install = "uv pip install -r requirements.txt"
