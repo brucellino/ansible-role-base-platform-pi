@@ -21,14 +21,13 @@ base_packages:
   - sshpass
   - zlib1g
   - unzip
-  - ntp
+  - chrony
 packages:
   - jq
   - bat
   - python3-virtualenv
   - tree
   - fake-hwclock
-  - thefuck
   - vim
   - ntpdate
 extra_packages: []
