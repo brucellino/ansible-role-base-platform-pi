@@ -15,7 +15,7 @@ base_packages:
   - lshw
   - net-tools
   - m4
-  - mlocate
+  - plocate
   - procps
   - python3
   - sshpass
