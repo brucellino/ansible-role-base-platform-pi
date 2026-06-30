@@ -4,8 +4,8 @@
   ansible.builtin.deb822_repository:
     name: tailscale
     types: deb
-    uris: "{{ tailscale_pkgs_url }}/{{ ansible_distribution | lower }}"
-    signed_by: "{{ tailscale_pkgs_url }}/{{ ansible_distribution | lower }}/{{ ansible_lsb.codename }}.noarmor.gpg"
+    uris: "{{ tailscale_pkgs_url }}/{{ ansible_facts['distribution'] | lower }}"
+    signed_by: "{{ tailscale_pkgs_url }}/{{ ansible_facts['distribution'] | lower }}/{{ ansible_facts.lsb.codename }}.noarmor.gpg"
     components: main
     state: present
     suites: "{{ ansible_lsb.codename }}"
@@ -17,6 +17,7 @@
   ansible.builtin.package:
     name: tailscale
     state: present
+    update_cache: true
 
 - name: Get tailscale keys from vault
   delegate_to: localhost
