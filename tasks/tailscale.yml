@@ -4,11 +4,11 @@
   ansible.builtin.deb822_repository:
     name: tailscale
     types: deb
-    uris: "{{ tailscale_pkgs_url }}/{{ ansible_distribution | lower }}
-      {{ ansible_lsb.codename }}"
+    uris: "{{ tailscale_pkgs_url }}/{{ ansible_distribution | lower }}"
     signed_by: "{{ tailscale_pkgs_url }}/{{ ansible_distribution | lower }}/{{ ansible_lsb.codename }}.noarmor.gpg"
     components: main
     state: present
+    suites: "{{ ansible_lsb.codename }}"
     install_python_debian: true
     enabled: true
 
