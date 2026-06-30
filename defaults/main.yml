@@ -29,7 +29,6 @@ packages:
   - tree
   - fake-hwclock
   - vim
-  - ntpdate
 extra_packages: []
 enabled_langs:
   - python
