@@ -6,6 +6,7 @@ uv = "latest"
 python = "3.14"
 node = "24"
 packer = "1.14.3"
+prek = "0.4.5"
 
 [tasks]
 install = "uv pip install -r requirements.txt"

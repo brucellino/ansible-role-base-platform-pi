@@ -1,25 +1,16 @@
 ---
 # Tasks for tailscale
-- name: Add tailscale gpg key
-  become: true
-  ansible.builtin.apt_key:
-    url: "{{ tailscale_pkgs_url }}/{{ ansible_distribution | lower }}/{{ ansible_lsb.codename }}.noarmor.gpg"
+- name: Add Tailscale Repo
+  ansible.builtin.deb822_repository:
+    name: tailscale
+    types: deb
+    uris: "{{ tailscale_pkgs_url }}/{{ ansible_distribution | lower }}
+      {{ ansible_lsb.codename }}"
+    signed_by: "{{ tailscale_pkgs_url }}/{{ ansible_distribution | lower }}/{{ ansible_lsb.codename }}.noarmor.gpg"
+    components: main
     state: present
-    validate_certs: true
-    keyring: /usr/share/keyrings/tailscale-archive-keyring.gpg
-
-- name: Add tailscale packages repo
-  become: true
-  ansible.builtin.apt_repository:
-    repo: >-
-      deb [signed-by=/usr/share/keyrings/tailscale-archive-keyring.gpg]
-      {{ tailscale_pkgs_url }}/{{ ansible_distribution | lower }}
-      {{ ansible_lsb.codename }} main
-    state: present
-    mode: "0644"
-    update_cache: true
-    validate_certs: true
-    filename: tailscale
+    install_python_debian: true
+    enabled: true
 
 - name: Ensure tailscale package
   become: true

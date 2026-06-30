@@ -12,15 +12,6 @@
   tags:
     - packages
 
-- name: NodeJS
-  ansible.builtin.import_tasks: nvm.yml
-  tags:
-    - packages
-    - extra_packages
-    - nvm
-    - nodejs
-  when: "'nvmnodejs' in enabled_langs"
-
 - name: Python
   ansible.builtin.import_tasks: python.yml
   when: "'python' is in enabled_langs"
