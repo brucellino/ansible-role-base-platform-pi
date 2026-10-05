@@ -21,6 +21,10 @@ jobs:
         with:
           install: true
           experimental: true
+      - name: Add dev tools
+        run: mise tasks run install
+      - name: Lint
+        run: ansible-lint .
       - name: Initialise Packer
         working-directory: test
         run: mise exec -- packer init .
