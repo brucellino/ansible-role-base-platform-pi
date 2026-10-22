@@ -2,7 +2,7 @@
 _.python.venv = { path = ".venv", create = true }
 
 [tools]
-uv = "0.13.4" # Used for deps
+uv = "0.13.5" # Used for deps
 python = "3.14" # Required for Ansible
 packer = "1.16.1" # Builds base image
 prek = "0.5.7" # Pre-commit hooks
