@@ -3,7 +3,7 @@ galaxy_info:
   author: Bruce Becker
   role_name: base_platform_pi
   namespace: brucellino
-  description: role for provisioning the base platform of my laptop
+  description: A role for provisioning the base platform of my laptop
   company: none
   license: MIT
   min_ansible_version: "2.7"
