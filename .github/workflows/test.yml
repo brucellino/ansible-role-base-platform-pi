@@ -26,3 +26,21 @@ jobs:
       - name: Initialise Packer
         working-directory: test
         run: mise exec -- packer init .
+  release:
+    needs:
+      - test
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Add tools
+        uses: jdx/mise-action@v5
+        with:
+          install: true
+      - name: Release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: semrel release
