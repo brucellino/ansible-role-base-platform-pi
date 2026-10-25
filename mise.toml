@@ -1,6 +1,9 @@
 [env]
 
 [tools]
+"github:semrels/semrel" = { version = "0.28.3", asset_pattern = "semrel_*_linux_amd64.tar.gz" }
+
+
 "pipx:ansible" = "14.5.0"
 "pipx:ansible-core" = "2.21.5"
 "pipx:ansible-lint" = "26.10.1"
