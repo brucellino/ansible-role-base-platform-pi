@@ -1,11 +1,11 @@
 [env]
-_.python.venv = { path = ".venv", create = true }
 
 [tools]
-uv = "0.13.5" # Used for deps
-python = "3.14" # Required for Ansible
-packer = "1.16.2" # Builds base image
-prek = "0.5.7" # Pre-commit hooks
+"pipx:ansible" = "14.5.0"
+"pipx:ansible-core" = "2.21.5"
+"pipx:ansible-lint" = "26.10.1"
+packer = "1.16.2"               # Builds base image
+prek = "0.5.7"                  # Pre-commit hooks
 
 [tasks]
 install = "uv pip install -r requirements.txt"
