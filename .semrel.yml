@@ -1,27 +1,31 @@
 schemaVersion: 1
 branches:
-    - name: main
+  - name: main
 tagPrefix: v
 rules:
-    - type: feat
-      bump: minor
-    - type: fix
-      bump: patch
-    - type: perf
-      bump: patch
-    - type: revert
-      bump: patch
+  - type: feat
+    bump: minor
+  - type: fix
+    bump: patch
+  - type: perf
+    bump: patch
+  - type: revert
+    bump: patch
 plugins:
-    - uses: '@semrel/analyzer-conventional'
-      args:
-        breaking_change_label: BREAKING CHANGE
-        minor_types: feat
-        patch_types: fix,perf,refactor
-    - uses: '@semrel/generator-release-notes'
-      phase: generator
-    - uses: '@semantic-release/changelog'
-    - uses: '@semrel/provider-git'
-      args:
-        push_branch: true
-    - uses: '@semrel/provider-github'
+  - uses: "@semrel/analyzer-conventional"
+    args:
+      breaking_change_label: BREAKING CHANGE
+      minor_types: feat
+      patch_types: fix,perf,refactor
+  - uses: "@semrel/generator-release-notes"
+    phase: generator
+  - uses: "@semrel/generator-changelog"
+    phase: pre-tag # must be pre-tag — runs before the tag; changes are committed with the release
+    args:
+      keep_releases: "10"
+  - uses: "@semrel/provider-git"
+    args:
+      push_branch: true
+
+  - uses: "@semrel/provider-github"
 commit_changelog: true
