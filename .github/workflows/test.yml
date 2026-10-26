@@ -40,6 +40,10 @@ jobs:
         uses: jdx/mise-action@v5
         with:
           install: true
+      - name: Set up releaser info
+        run: |
+          git config user.name "${GITHUB_ACTOR}[bot]"
+          git config user.email "${GITHUB_ACTOR}@users.noreply.github.com"
       - name: Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
