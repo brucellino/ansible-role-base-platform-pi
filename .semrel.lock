@@ -1,0 +1,45 @@
+{
+  "semrelLockVersion": 1,
+  "updatedAt": "2026-10-26T03:40:13Z",
+  "plugins": [
+    {
+      "binaryName": "semrel-plugin-conventional",
+      "ref": "@semrel/analyzer-conventional",
+      "version": "0.4.1",
+      "checksums": {
+        "darwin_amd64": "5a6065ca2a918e0fc5c8b7ce2beca9275fd7f68ab42da86852566b1ba22d899e",
+        "darwin_arm64": "3546a12888c23607e7750e9d457696da8e17e96482e64e2bcf4a348b7e856c67",
+        "linux_amd64": "d160fe1e63fbeecaf665bc6c7ffe02a0cbbed4be5db29aaa54228391cc0dde0a",
+        "linux_arm64": "4f7e0b729e76f60f60e311229875b36bd2a6e7ce993871b213c8245902276141",
+        "windows_amd64": "68954cee220cda8c35203f7873da3feb16679ca0a711104d08034a7e4d812156",
+        "windows_arm64": "377485b71306ba1b010d62f7d9790fd2b544e1144a915f74dcb2484911add05e"
+      }
+    },
+    {
+      "binaryName": "semrel-plugin-git",
+      "ref": "@semrel/provider-git",
+      "version": "0.5.0",
+      "checksums": {
+        "darwin_amd64": "2631623e2c8e51373bf05b3a1e75cc69d76a75271194a67808dd87f5c9591118",
+        "darwin_arm64": "b50f5262d31ac4f3759bc4c466591993aeb273d3ac3857a4beb02c996e4ab5f9",
+        "linux_amd64": "9585d24672da84a6ec1777f752954a691bc3cdd37869052246f9adff7ffef8f2",
+        "linux_arm64": "4d2507a123dcbb4a29be7645fba1b7059adf2f9a42811c81d45c527d14af2b40",
+        "windows_amd64": "fdbba4cdb0f55e9a1daf2a071012e6729685aa9d9fddf0936ebf9f0901d2de35",
+        "windows_arm64": "2340a8db74606152892620daf9448f5432ad4a38a5a3914448be65829ddb11c8"
+      }
+    },
+    {
+      "binaryName": "semrel-plugin-github",
+      "ref": "@semrel/provider-github",
+      "version": "0.6.0",
+      "checksums": {
+        "darwin_amd64": "b93696987ea281b249e168bcd8d30d9afb6605ea61b8996ce6d63363e42f57c8",
+        "darwin_arm64": "ab6cf2d5bd0850222253178a6ea6fd246cab3d95a626799eda65cb06e7475b88",
+        "linux_amd64": "257a7b5eff9a9e71fc8095b02d3b8e25ad646337aede92b11d2c7a81956571ed",
+        "linux_arm64": "04703ddc7579adfabc01af286c4fce87ceb1e96c1d09acafa5eeb4ddb03b9066",
+        "windows_amd64": "e11304b7c31a3f638ea5ac7ccdedff92eeb4944fa642e1987562fd7e492d11f4",
+        "windows_arm64": "de3d020a6af12ce61f214ca15e9ce85c60637fca1e28617b8f80d01ed865ae50"
+      }
+    }
+  ]
+}

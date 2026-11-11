@@ -31,7 +31,9 @@ jobs:
         run: ansible-lint .
       - name: Initialise Packer
         working-directory: test
-        run: mise exec -- packer init .
+        run: packer init .
+        env:
+          PACKER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   release:
     needs:
       - test

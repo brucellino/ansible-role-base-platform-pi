@@ -8,4 +8,4 @@
 "pipx:ansible-core" = "2.22.0"
 "pipx:ansible-lint" = "26.11.0"
 packer = "1.16.2"               # Builds base image
-prek = "0.5.10"                  # Pre-commit hooks
+prek = "0.5.10"                 # Pre-commit hooks
