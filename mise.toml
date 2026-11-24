@@ -3,7 +3,7 @@
 [tools]
 "github:semrels/semrel" = { version = "0.28.3", asset_pattern = "semrel_*_linux_amd64.tar.gz" }
 
-pipx = "1.18.19"
+pipx = "1.19.1"
 python = "3.15.2"
 "pipx:ansible" = "15.0.0"
 "pipx:ansible-core" = "2.22.0"
