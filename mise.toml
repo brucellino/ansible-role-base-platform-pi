@@ -9,4 +9,4 @@ python = "3.15.2"
 "pipx:ansible-core" = "2.22.0"
 "pipx:ansible-lint" = "26.11.1"
 packer = "1.16.3"               # Builds base image
-prek = "0.5.11"                 # Pre-commit hooks
+prek = "0.5.12"                 # Pre-commit hooks
